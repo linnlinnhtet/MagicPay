@@ -27,7 +27,7 @@ class AdminLoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::ADMINPANEL;
 
     /**
      * Create a new controller instance.
@@ -36,14 +36,30 @@ class AdminLoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin_user')->except('logout');
     }
     protected function guard()
     {
-        return Auth::guard('admin_users');
+        return Auth::guard('admin_user');
     }
     public function showLoginForm()
     {
         return view('auth.admin_login');
     }
+    // public function logout(Request $request)
+    // {
+    //     $this->guard()->logout();
+
+    //     $request->session()->invalidate();
+
+    //     $request->session()->regenerateToken();
+
+    //     if ($response = $this->loggedOut($request)) {
+    //         return $response;
+    //     }
+
+    //     return $request->wantsJson()
+    //         ? new JsonResponse([], 204)
+    //         : redirect('/admin');
+    // }
 }
